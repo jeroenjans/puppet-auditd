@@ -25,8 +25,8 @@ class auditd::params {
         $audisp_package     = 'audit-audispd-plugins'
         $manage_audit_files = true
         $rules_file         = '/etc/audit/rules.d/puppet.rules'
-        $service_restart    = '/usr/libexec/initscripts/legacy-actions/auditd/restart'
-        $service_stop       = '/usr/libexec/initscripts/legacy-actions/auditd/stop'
+        $service_restart    = '/bin/systemctl restart auditd'
+        $service_stop       = '/bin/systemctl stop auditd'
       }
       else {
         $audisp_package     = 'audispd-plugins'
@@ -44,8 +44,8 @@ class auditd::params {
         $manage_audit_files = true
         # TODO: Set rules_file to undef?
         $rules_file         = '/etc/audit/rules.d/puppet.rules'
-        $service_restart    = '/bin/systemctl restart auditd'
-        $service_stop       = '/bin/systemctl stop auditd'
+        $service_restart    = '/usr/libexec/initscripts/legacy-actions/auditd/restart'
+        $service_stop       = '/usr/libexec/initscripts/legacy-actions/auditd/stop'
       } else {
         $manage_audit_files = false
         $rules_file         = '/etc/audit/audit.rules'
