@@ -391,7 +391,7 @@ class auditd (
       "${write_logs} is not supported for write_logs. Allowed values are 'yes' and 'no'.")
   }
   validate_integer($priority_boost)
-  validate_re($flush, '^(none|incremental|data|sync)$',
+  validate_re($flush, '^(none|incremental|data|sync|incremental_async)$',
     "${flush} is not supported for flush. Allowed values are 'none', 'incremental', 'data' and 'sync'.")
   validate_integer($freq)
   validate_integer($num_logs)

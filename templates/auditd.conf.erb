@@ -1,6 +1,9 @@
 #
 # This file is managed by Puppet.
 #
+local_events = yes
+use_libwrap = yes
+distribute_network = no
 log_file = <%= @log_file %>
 log_format = <%= @log_format %>
 log_group = <%= @log_group %>
