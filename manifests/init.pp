@@ -487,6 +487,8 @@ class auditd (
       content => template('auditd/audit.rules.begin.fragment.erb'),
       order  => '01',
     }
+
+    $service_subscribe = undef
   } else {
     concat { $rules_file:
       ensure         => 'present',
@@ -502,6 +504,8 @@ class auditd (
       content => template('auditd/audit.rules.begin.fragment.erb'),
       order   => 0
     }
+
+    $service_subscribe = Concat['audit-file']
   }
 
   file { '/etc/audisp/audispd.conf':
@@ -532,7 +536,7 @@ class auditd (
       subscribe => [
         File['/etc/audit/auditd.conf'],
         File['/etc/audisp/audispd.conf'],
-        Concat['audit-file'],
+        $service_subscribe,
       ],
     }
   }

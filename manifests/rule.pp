@@ -26,6 +26,7 @@ define auditd::rule (
       owner   => 'root',
       group   => 'root',
       mode    => '0640',
+      notify  => Service['auditd'],
     }
   } else {
     concat::fragment { "auditd_fragment_${name}":
