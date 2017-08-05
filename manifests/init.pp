@@ -481,21 +481,29 @@ class auditd (
       purge   => true,
       require => Package[$package_name],
     }
+
+    auditd::rule { 'default rules':
+      target => 'default.rules',
+      content => template('auditd/audit.rules.begin.fragment.erb'),
+      order  => '01',
+    }
+  } else {
+    concat { $rules_file:
+      ensure         => 'present',
+      owner          => 'root',
+      group          => 'root',
+      mode           => '0640',
+      ensure_newline => true,
+      warn           => true,
+      alias          => 'audit-file',
+    }
+    concat::fragment { 'auditd_rules_begin':
+      target  => $rules_file,
+      content => template('auditd/audit.rules.begin.fragment.erb'),
+      order   => 0
+    }
   }
-  concat { $rules_file:
-    ensure         => 'present',
-    owner          => 'root',
-    group          => 'root',
-    mode           => '0640',
-    ensure_newline => true,
-    warn           => true,
-    alias          => 'audit-file',
-  }
-  concat::fragment{ 'auditd_rules_begin':
-    target  => $rules_file,
-    content => template('auditd/audit.rules.begin.fragment.erb'),
-    order   => 0
-  }
+
   file { '/etc/audisp/audispd.conf':
     ensure  => 'file',
     owner   => 'root',

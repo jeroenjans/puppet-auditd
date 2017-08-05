@@ -2,7 +2,7 @@
 ##    content: Rule definition
 ##    order:   Relative order of this rule
 
-define auditd::rule(
+define auditd::rule (
   $target  = 'undefined',
   $content = '',
   $order   = 10,
@@ -19,9 +19,19 @@ define auditd::rule(
   }
   validate_string($body)
 
-  concat::fragment{ "auditd_fragment_${name}":
-    target  => $target,
-    order   => $order,
-    content => $body,
+  if $::auditd::manage_audit_files {
+    file { "/etc/audit/rules.d/${order}-${target}":
+      ensure  => 'present',
+      content => $content,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0640',
+    }
+  } else {
+    concat::fragment { "auditd_fragment_${name}":
+      target  => $target,
+      order   => $order,
+      content => $body,
+    }
   }
 }
